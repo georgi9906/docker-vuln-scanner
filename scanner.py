@@ -11,23 +11,41 @@ DB_USER = "docker_scanner"
 DB_PASSWORD = "docker123"
 DB_HOST = "localhost"
 
-IMAGE_NAME = "nginx"
 REPORTS_DIR = f"Reports_{datetime.now().strftime('%Y-%m-%d')}"
-
+DOCKER_HUB_URL = "https://registry.hub.docker.com/v2/repositories/library"  # <-- ADDED
 
 def ensure_reports_dir():
     if not os.path.exists(REPORTS_DIR):
         os.makedirs(REPORTS_DIR)
     return REPORTS_DIR
 
+# <-- ADDED: Function to fetch all tags for a repo
+def get_all_tags(repo):
+    tags = []
+    url = f"{DOCKER_HUB_URL}/{repo}/tags?page_size=100"
+    while url:
+        response = requests.get(url)
+        if response.status_code != 200:
+            print(f"❌ Failed to fetch tags for {repo}")
+            break
+        data = response.json()
+        tags.extend([t["name"] for t in data.get("results", [])])
+        url = data.get("next")
+    return tags
 
-def load_tags_from_txt(filename="nginx_tags.txt"):
+# <-- ADDED: Function to write tags to a file for each repo
+def write_tags_to_file(repo, tags):
+    filename = f"{repo}_tags.txt"
+    with open(filename, "w") as f:
+        for tag in tags:
+            f.write(f"{tag}\n")
+
+def load_tags_from_txt(filename):
     with open(filename, "r") as file:
         return [line.strip() for line in file if line.strip()]
 
-
-def run_trivy_scan(image_name):
-    tag = image_name.split(":")[1]
+def run_trivy_scan(repo, tag):
+    image_name = f"{repo}:{tag}"
     print(f"🔍 Running Trivy scan for {image_name}...")
 
     json_report_file = os.path.join(REPORTS_DIR, f"CRITICAL_HIGH_Report_{tag}.json")
@@ -45,10 +63,10 @@ def run_trivy_scan(image_name):
             print(f"❌ Digest is empty for {image_name}, skipping scan.")
             return
 
-        subprocess.run(
-            ["trivy", "image", "--severity", "HIGH,CRITICAL", "--format", "json", "-o", json_report_file, image_name],
-            check=True
-        )
+        subprocess.run([
+            "trivy", "image", "--severity", "HIGH,CRITICAL",
+            "--format", "json", "-o", json_report_file, image_name
+        ], check=True)
 
         with open(json_report_file, "r", encoding="utf-8") as file:
             scan_data = json.load(file)
@@ -76,7 +94,7 @@ def run_trivy_scan(image_name):
                     SELECT 1 FROM docker_vulnerabilities_flat
                     WHERE image_name = %s AND tag = %s AND digest = %s
                     AND vulnerability_id = %s
-                """, (IMAGE_NAME, tag, digest, vuln_id))
+                """, (repo, tag, digest, vuln_id))
 
                 if cur.fetchone():
                     print(f"⚠️ CVE {vuln_id} already in DB for {image_name}")
@@ -84,20 +102,20 @@ def run_trivy_scan(image_name):
                         UPDATE docker_vulnerabilities_flat
                         SET is_fixed = 'No'
                         WHERE image_name = %s AND tag = %s AND digest = %s AND vulnerability_id = %s
-                    """, (IMAGE_NAME, tag, digest, vuln_id))
+                    """, (repo, tag, digest, vuln_id))
                     continue
 
                 cur.execute("""
                     INSERT INTO docker_vulnerabilities_flat (
                         image_name, tag, digest, scanned_at,
                         vulnerability_id, title, description, pkg_name,
-                        installed_version, fixed_version, severity,
+                        installed_version, fixed_versions, severity,
                         published_date, last_modified_date, solution,
                         reference_links, cvss_score, trivy_db_updated,
                         is_fixed
                     ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 'No');
                 """, (
-                    IMAGE_NAME, tag, digest, scanned_at,
+                    repo, tag, digest, scanned_at,
                     vuln_id, vuln.get("Title"), vuln.get("Description"),
                     vuln.get("PkgName"), vuln.get("InstalledVersion"), vuln.get("FixedVersion"),
                     vuln.get("Severity"), vuln.get("PublishedDate"), vuln.get("LastModifiedDate"),
@@ -112,7 +130,7 @@ def run_trivy_scan(image_name):
             SET is_fixed = 'Yes'
             WHERE image_name = %s AND tag = %s AND digest = %s
             AND vulnerability_id NOT IN %s
-        """, (IMAGE_NAME, tag, digest, tuple(found_cves) if found_cves else ('',)))
+        """, (repo, tag, digest, tuple(found_cves) if found_cves else ('',)))
 
         conn.commit()
         cur.close()
@@ -125,21 +143,40 @@ def run_trivy_scan(image_name):
 
 def main():
     ensure_reports_dir()
-    print("🚀 Starting scan for all tags in nginx_tags.txt...")
+    # Read the list of repositories to scan
     try:
-        all_tags = load_tags_from_txt()
+        with open("docker_repos.txt", "r") as f:
+            repos = [line.strip() for line in f if line.strip()]
     except FileNotFoundError:
-        print("❌ Tag list file not found. Exiting.")
+        print("❌ docker_repos.txt not found.")
         return
 
-    for tag in all_tags:
-        print(f"📦 Processing tag: {tag}")
-        try:
-            image_identifier = f"{IMAGE_NAME}:{tag}"
-            run_trivy_scan(image_identifier)
-            subprocess.run(["docker", "rmi", "-f", image_identifier], check=True)
-        except subprocess.CalledProcessError as e:
-            print(f"⚠️ Failed to process {tag}: {e}")
+    for repo in repos:
+        print(f"📦 Processing repository: {repo}")
+        tags = get_all_tags(repo)
+        if not tags:
+            print(f"⚠️ No tags found for {repo}")
+            continue
+        write_tags_to_file(repo, tags)  # For traceability
+
+        for tag in tags:
+            image_identifier = f"{repo}:{tag}"
+            try:
+                run_trivy_scan(repo, tag)   # Call scan for each <repo>:<tag>
+                subprocess.run(["docker", "rmi", "-f", image_identifier], check=True)
+            except subprocess.CalledProcessError as e:
+                print(f"⚠️ Failed to process {image_identifier}: {e}")
+                # Optionally log this failed tag to a file for further review:
+                with open("failed_tags.log", "a") as logf:
+                    logf.write(f"{image_identifier} -- {e}\n")
+                break
+                continue  # Continue to next tag
+            except Exception as e:
+                print(f"❌ Unexpected error on {image_identifier}: {e}")
+                with open("failed_tags.log", "a") as logf:
+                    logf.write(f"{image_identifier} -- {e}\n")
+                continue  # Continue to next tag
+
 
 
 if __name__ == "__main__":
