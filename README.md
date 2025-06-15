@@ -26,15 +26,7 @@ pip install -r requirements.txt
 
 ## ⚙️ Environment Variables
 
-Create a `.env` file with your PostgreSQL credentials:
-
-```
-DB_NAME=docker_vuln_db
-DB_USER=docker_scanner
-DB_PASSWORD=docker123
-DB_HOST=localhost
-DB_PORT=5432
-```
+Use the `.env` file with PostgreSQL credentials.
 
 ---
 
