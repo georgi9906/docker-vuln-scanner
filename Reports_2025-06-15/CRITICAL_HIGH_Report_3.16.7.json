@@ -1,0 +1,62 @@
+{
+  "SchemaVersion": 2,
+  "CreatedAt": "2025-06-15T18:26:02.223516191-04:00",
+  "ArtifactName": "alpine:3.16.7",
+  "ArtifactType": "container_image",
+  "Metadata": {
+    "OS": {
+      "Family": "alpine",
+      "Name": "3.16.7",
+      "EOSL": true
+    },
+    "ImageID": "sha256:187eae39ad949e24d9410fa5c4eab8cafba7edd4892211c1d710bdaf49265c37",
+    "DiffIDs": [
+      "sha256:0e182002b05f2ab123995821ef14f1cda765a0c31f7a6d260221558f6466535e"
+    ],
+    "RepoTags": [
+      "alpine:3.16.7"
+    ],
+    "RepoDigests": [
+      "alpine@sha256:a8cbb8c69ee71561f4b69c066bad07f7e510caaa523da26fbfc606b10bd7934b"
+    ],
+    "ImageConfig": {
+      "architecture": "amd64",
+      "created": "2023-08-07T19:20:31.99661329Z",
+      "docker_version": "20.10.23",
+      "history": [
+        {
+          "created": "2023-08-07T19:20:31Z",
+          "created_by": "/bin/sh -c #(nop) ADD file:76d829bbce3dd420a8419919b0916c0fda917011d1e6752ca5b9e53d5ca890a6 in / "
+        },
+        {
+          "created": "2023-08-07T19:20:31Z",
+          "created_by": "/bin/sh -c #(nop)  CMD [\"/bin/sh\"]",
+          "empty_layer": true
+        }
+      ],
+      "os": "linux",
+      "rootfs": {
+        "type": "layers",
+        "diff_ids": [
+          "sha256:0e182002b05f2ab123995821ef14f1cda765a0c31f7a6d260221558f6466535e"
+        ]
+      },
+      "config": {
+        "Cmd": [
+          "/bin/sh"
+        ],
+        "Env": [
+          "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+        ],
+        "Image": "sha256:5dc6770d6af158ab424c4422370627f6674ddee29e937fb56d767d65fbb5c827"
+      }
+    }
+  },
+  "Results": [
+    {
+      "Target": "alpine:3.16.7 (alpine 3.16.7)",
+      "Class": "os-pkgs",
+      "Type": "alpine"
+    }
+  ]
+}

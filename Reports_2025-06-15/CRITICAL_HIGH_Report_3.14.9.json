@@ -1,0 +1,218 @@
+{
+  "SchemaVersion": 2,
+  "CreatedAt": "2025-06-15T18:27:01.44335613-04:00",
+  "ArtifactName": "alpine:3.14.9",
+  "ArtifactType": "container_image",
+  "Metadata": {
+    "OS": {
+      "Family": "alpine",
+      "Name": "3.14.9",
+      "EOSL": true
+    },
+    "ImageID": "sha256:6dff1269bc79a7c9056a9e9fa9c04850e842b0124a9c73d089ae647b13b0187d",
+    "DiffIDs": [
+      "sha256:625523cb9cce7a1bcc1d03e3038de4843a27af3b92d859004bcefb0027291933"
+    ],
+    "RepoTags": [
+      "alpine:3.14.9"
+    ],
+    "RepoDigests": [
+      "alpine@sha256:fa26727c28837d1471c2f1524d297a0255c153b5d023d7badd1412be7e6e12a2"
+    ],
+    "ImageConfig": {
+      "architecture": "amd64",
+      "created": "2023-02-11T04:46:59.997430675Z",
+      "docker_version": "20.10.12",
+      "history": [
+        {
+          "created": "2023-02-11T04:46:59Z",
+          "created_by": "/bin/sh -c #(nop) ADD file:a41bb436701fd0adf99a3157d19f172b3e54ea033f5c617009e2d1bdeac206d7 in / "
+        },
+        {
+          "created": "2023-02-11T04:46:59Z",
+          "created_by": "/bin/sh -c #(nop)  CMD [\"/bin/sh\"]",
+          "empty_layer": true
+        }
+      ],
+      "os": "linux",
+      "rootfs": {
+        "type": "layers",
+        "diff_ids": [
+          "sha256:625523cb9cce7a1bcc1d03e3038de4843a27af3b92d859004bcefb0027291933"
+        ]
+      },
+      "config": {
+        "Cmd": [
+          "/bin/sh"
+        ],
+        "Env": [
+          "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+        ],
+        "Image": "sha256:f48de6c6318d769bb6b2a3f7c99cfd207e0f12b575ade47fc44fb189210c3924"
+      }
+    }
+  },
+  "Results": [
+    {
+      "Target": "alpine:3.14.9 (alpine 3.14.9)",
+      "Class": "os-pkgs",
+      "Type": "alpine",
+      "Vulnerabilities": [
+        {
+          "VulnerabilityID": "CVE-2023-0464",
+          "PkgID": "libcrypto1.1@1.1.1t-r0",
+          "PkgName": "libcrypto1.1",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/libcrypto1.1@1.1.1t-r0?arch=x86_64\u0026distro=3.14.9",
+            "UID": "7f3998ebcd2677d6"
+          },
+          "InstalledVersion": "1.1.1t-r0",
+          "FixedVersion": "1.1.1t-r1",
+          "Status": "fixed",
+          "Layer": {
+            "DiffID": "sha256:625523cb9cce7a1bcc1d03e3038de4843a27af3b92d859004bcefb0027291933"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2023-0464",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Title": "openssl: Denial of service by excessive resource usage in verifying X509 policy constraints",
+          "Description": "A security vulnerability has been identified in all supported versions\n\nof OpenSSL related to the verification of X.509 certificate chains\nthat include policy constraints.  Attackers may be able to exploit this\nvulnerability by creating a malicious certificate chain that triggers\nexponential use of computational resources, leading to a denial-of-service\n(DoS) attack on affected systems.\n\nPolicy processing is disabled by default but can be enabled by passing\nthe `-policy' argument to the command line utilities or by calling the\n`X509_VERIFY_PARAM_set1_policies()' function.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-295"
+          ],
+          "VendorSeverity": {
+            "alma": 2,
+            "amazon": 2,
+            "azure": 3,
+            "cbl-mariner": 3,
+            "nvd": 3,
+            "oracle-oval": 2,
+            "photon": 3,
+            "redhat": 1,
+            "ubuntu": 1
+          },
+          "CVSS": {
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 5.9
+            }
+          },
+          "References": [
+            "https://access.redhat.com/errata/RHSA-2023:3722",
+            "https://access.redhat.com/security/cve/CVE-2023-0464",
+            "https://bugzilla.redhat.com/2181082",
+            "https://bugzilla.redhat.com/2182561",
+            "https://bugzilla.redhat.com/2182565",
+            "https://bugzilla.redhat.com/2188461",
+            "https://bugzilla.redhat.com/2207947",
+            "https://errata.almalinux.org/9/ALSA-2023-3722.html",
+            "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=2017771e2db3e2b96f89bbe8766c3209f6a99545",
+            "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=2dcd4f1e3115f38cefa43e3efbe9b801c27e642e",
+            "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=879f7080d7e141f415c79eaa3a8ac4a3dad0348b",
+            "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=959c59c7a0164117e7f8366466a32bb1f8d77ff1",
+            "https://linux.oracle.com/cve/CVE-2023-0464.html",
+            "https://linux.oracle.com/errata/ELSA-2023-3722.html",
+            "https://lists.debian.org/debian-lts-announce/2023/06/msg00011.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2023-0464",
+            "https://security.gentoo.org/glsa/202402-08",
+            "https://security.netapp.com/advisory/ntap-20230406-0006/",
+            "https://security.netapp.com/advisory/ntap-20240621-0006/",
+            "https://ubuntu.com/security/notices/USN-6039-1",
+            "https://www.couchbase.com/alerts/",
+            "https://www.cve.org/CVERecord?id=CVE-2023-0464",
+            "https://www.debian.org/security/2023/dsa-5417",
+            "https://www.openssl.org/news/secadv/20230322.txt"
+          ],
+          "PublishedDate": "2023-03-22T17:15:13.13Z",
+          "LastModifiedDate": "2025-05-05T16:15:26.103Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2023-0464",
+          "PkgID": "libssl1.1@1.1.1t-r0",
+          "PkgName": "libssl1.1",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/libssl1.1@1.1.1t-r0?arch=x86_64\u0026distro=3.14.9",
+            "UID": "dd4a9dfe74862022"
+          },
+          "InstalledVersion": "1.1.1t-r0",
+          "FixedVersion": "1.1.1t-r1",
+          "Status": "fixed",
+          "Layer": {
+            "DiffID": "sha256:625523cb9cce7a1bcc1d03e3038de4843a27af3b92d859004bcefb0027291933"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2023-0464",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Title": "openssl: Denial of service by excessive resource usage in verifying X509 policy constraints",
+          "Description": "A security vulnerability has been identified in all supported versions\n\nof OpenSSL related to the verification of X.509 certificate chains\nthat include policy constraints.  Attackers may be able to exploit this\nvulnerability by creating a malicious certificate chain that triggers\nexponential use of computational resources, leading to a denial-of-service\n(DoS) attack on affected systems.\n\nPolicy processing is disabled by default but can be enabled by passing\nthe `-policy' argument to the command line utilities or by calling the\n`X509_VERIFY_PARAM_set1_policies()' function.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-295"
+          ],
+          "VendorSeverity": {
+            "alma": 2,
+            "amazon": 2,
+            "azure": 3,
+            "cbl-mariner": 3,
+            "nvd": 3,
+            "oracle-oval": 2,
+            "photon": 3,
+            "redhat": 1,
+            "ubuntu": 1
+          },
+          "CVSS": {
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 5.9
+            }
+          },
+          "References": [
+            "https://access.redhat.com/errata/RHSA-2023:3722",
+            "https://access.redhat.com/security/cve/CVE-2023-0464",
+            "https://bugzilla.redhat.com/2181082",
+            "https://bugzilla.redhat.com/2182561",
+            "https://bugzilla.redhat.com/2182565",
+            "https://bugzilla.redhat.com/2188461",
+            "https://bugzilla.redhat.com/2207947",
+            "https://errata.almalinux.org/9/ALSA-2023-3722.html",
+            "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=2017771e2db3e2b96f89bbe8766c3209f6a99545",
+            "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=2dcd4f1e3115f38cefa43e3efbe9b801c27e642e",
+            "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=879f7080d7e141f415c79eaa3a8ac4a3dad0348b",
+            "https://git.openssl.org/gitweb/?p=openssl.git;a=commitdiff;h=959c59c7a0164117e7f8366466a32bb1f8d77ff1",
+            "https://linux.oracle.com/cve/CVE-2023-0464.html",
+            "https://linux.oracle.com/errata/ELSA-2023-3722.html",
+            "https://lists.debian.org/debian-lts-announce/2023/06/msg00011.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2023-0464",
+            "https://security.gentoo.org/glsa/202402-08",
+            "https://security.netapp.com/advisory/ntap-20230406-0006/",
+            "https://security.netapp.com/advisory/ntap-20240621-0006/",
+            "https://ubuntu.com/security/notices/USN-6039-1",
+            "https://www.couchbase.com/alerts/",
+            "https://www.cve.org/CVERecord?id=CVE-2023-0464",
+            "https://www.debian.org/security/2023/dsa-5417",
+            "https://www.openssl.org/news/secadv/20230322.txt"
+          ],
+          "PublishedDate": "2023-03-22T17:15:13.13Z",
+          "LastModifiedDate": "2025-05-05T16:15:26.103Z"
+        }
+      ]
+    }
+  ]
+}
