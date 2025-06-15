@@ -3,7 +3,7 @@ import psycopg2
 from dotenv import load_dotenv
 from pathlib import Path
 
-env_path = Path("/home/kali/Desktop/vuln_api/credentials.env")
+env_path = Path("/home/kali/Desktop/Vulnerability_DB_Scanning/vuln_api/credentials.env")
 load_dotenv(dotenv_path=env_path)
 
 print("Loaded DB_USER:", os.getenv("DB_USER"))  # Debug print

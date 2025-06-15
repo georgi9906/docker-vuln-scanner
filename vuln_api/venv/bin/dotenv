@@ -1,4 +1,4 @@
-#!/home/kali/Desktop/vuln_api/venv/bin/python3
+#!/home/kali/Desktop/Vulnerability_DB_Scanning/vuln_api/venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
